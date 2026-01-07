@@ -120,5 +120,77 @@
         }
         lucide.createIcons();
     </script>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, query, onSnapshot, orderBy, limit, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    // Firebase Config
+    const videoConfig = {
+        apiKey: "AIzaSyB3zKexi3a-4WniftHc_00Tc8rcRdda7pY",
+        authDomain: "comj-b7bf6.firebaseapp.com",
+        projectId: "comj-b7bf6",
+        storageBucket: "comj-b7bf6.firebasestorage.app",
+        appId: "1:137177672880:web:307a4cec9b901c6e8ddf75"
+    };
+
+    const vApp = initializeApp(videoConfig);
+    const vDB = getFirestore(vApp);
+    const realUser = localStorage.getItem('studentName') || "Student";
+
+    // 1. MESSAGES LOAD KARNA (Real-time)
+    function loadMessages() {
+        const feed = document.getElementById('communityFeed');
+        if (!feed) return;
+
+        // 'community' collection se data mangna (orderBy timestamp)
+        const qChat = query(collection(vDB, "community"), orderBy("timestamp", "asc"), limit(50));
+
+        onSnapshot(qChat, (snap) => {
+            feed.innerHTML = ''; // Pehle load message hatao
+            if (snap.empty) {
+                feed.innerHTML = '<p style="text-align:center; color:gray;">Koi message nahi hai. Shuruat karein!</p>';
+                return;
+            }
+
+            snap.forEach(d => {
+                const m = d.data();
+                const isMe = m.user === realUser;
+                
+                feed.innerHTML += `
+                    <div class="msg-card" style="${isMe ? 'align-self: flex-end; background: var(--primary); color: white;' : ''}">
+                        <span class="msg-user" style="${isMe ? 'color: #fff;' : ''}">${m.user}</span>
+                        <p class="msg-text">${m.text}</p>
+                    </div>`;
+            });
+            // Screen ko niche scroll karein naye message par
+            feed.scrollTop = feed.scrollHeight;
+        });
+    }
+
+    // 2. MESSAGE POST KARNA
+    const postBtn = document.getElementById('postBtn');
+    const input = document.getElementById('doubtInput');
+
+    postBtn.onclick = async () => {
+        const text = input.value.trim();
+        if (!text) return;
+
+        try {
+            await addDoc(collection(vDB, "community"), {
+                user: realUser,
+                text: text,
+                timestamp: serverTimestamp()
+            });
+            input.value = ''; // Box khali karo
+        } catch (e) {
+            alert("Message bhejane mein galti: " + e.message);
+        }
+    };
+
+    // Initial Load
+    loadMessages();
+</script>
+>
+
 </body>
 </html>

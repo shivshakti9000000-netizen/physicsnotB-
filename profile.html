@@ -63,5 +63,68 @@
     <script>
         lucide.createIcons();
     </script>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const videoConfig = {
+        apiKey: "AIzaSyB3zKexi3a-4WniftHc_00Tc8rcRdda7pY",
+        authDomain: "comj-b7bf6.firebaseapp.com",
+        projectId: "comj-b7bf6",
+        storageBucket: "comj-b7bf6.firebasestorage.app",
+        appId: "1:137177672880:web:307a4cec9b901c6e8ddf75"
+    };
+
+    const vApp = initializeApp(videoConfig);
+    const vDB = getFirestore(vApp);
+    const realUser = localStorage.getItem('studentName') || "Student";
+
+    // 1. Profile Initial & Name Setup
+    function setupProfile() {
+        document.getElementById('userName').innerText = realUser;
+        // Naam ka pehla akshar dikhane ke liye
+        document.getElementById('profileInitial').innerText = realUser.charAt(0).toUpperCase();
+        
+        // Theme load karna
+        const savedTheme = localStorage.getItem('siteTheme') || 'light';
+        document.body.setAttribute('data-theme', savedTheme);
+    }
+
+    // 2. Real-time Stats Sync
+    function syncStats() {
+        if (realUser === "Student") return;
+
+        const studentRef = doc(vDB, "students", realUser);
+        onSnapshot(studentRef, (snap) => {
+            if (snap.exists()) {
+                const data = snap.data();
+                // IDs match honi chahiye jo niche HTML mein hain
+                document.getElementById('totalPts').innerText = data.score || 0;
+                document.getElementById('watchedCount').innerText = data.videosWatched || 0;
+            }
+        });
+    }
+
+    // 3. Settings Actions
+    window.toggleTheme = function() {
+        const current = document.body.getAttribute('data-theme');
+        const next = current === 'dark' ? 'light' : 'dark';
+        document.body.setAttribute('data-theme', next);
+        localStorage.setItem('siteTheme', next);
+        lucide.createIcons();
+    };
+
+    document.getElementById('logoutBtn').onclick = () => {
+        if(confirm("Boss, kya aap sach mein logout karna chahte hain?")) {
+            localStorage.clear();
+            window.location.href = 'index.html';
+        }
+    };
+
+    // Initialize
+    setupProfile();
+    syncStats();
+</script>
+
 </body>
 </html>

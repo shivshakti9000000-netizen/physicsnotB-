@@ -67,5 +67,59 @@
 
     <script type="module" src="app.js"></script>
     <script>lucide.createIcons();</script>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, doc, onSnapshot, collection, query, getDocs, addDoc, orderBy, where, limit, setDoc, increment } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const videoConfig = {
+        apiKey: "AIzaSyB3zKexi3a-4WniftHc_00Tc8rcRdda7pY",
+        authDomain: "comj-b7bf6.firebaseapp.com",
+        projectId: "comj-b7bf6",
+        storageBucket: "comj-b7bf6.firebasestorage.app",
+        appId: "1:137177672880:web:307a4cec9b901c6e8ddf75"
+    };
+
+    const vApp = initializeApp(videoConfig);
+    const vDB = getFirestore(vApp);
+    const realUser = localStorage.getItem('studentName') || "Student";
+
+    // --- COMMON LOGIC (Har Page Par Chalega) ---
+    
+    // 1. Theme Toggle Fix
+    window.toggleTheme = function() {
+        const current = document.body.getAttribute('data-theme');
+        const next = current === 'dark' ? 'light' : 'dark';
+        document.body.setAttribute('data-theme', next);
+        localStorage.setItem('siteTheme', next);
+    };
+
+    // 2. Name Display Fix
+    document.querySelectorAll('#userName').forEach(el => el.innerText = realUser);
+
+    // 3. Notification Load (Universal)
+    const notifyBox = document.getElementById('notificationList');
+    if (notifyBox) {
+        onSnapshot(query(collection(vDB, "notifications"), limit(10)), (snap) => {
+            notifyBox.innerHTML = '';
+            snap.forEach(d => {
+                notifyBox.innerHTML += `<div class="notify-card"><b>${d.data().message}</b></div>`;
+            });
+        });
+    }
+
+    // --- PAGE SPECIFIC LOGIC ---
+    const path = window.location.pathname;
+
+    // Agar Dashboard par ho
+    if(path.includes('dashboard.html')) {
+        // Yahan LoadVideos aur Stats ka code daalein
+    }
+
+    // Agar Player par ho
+    if(path.includes('player.html')) {
+        // Yahan Iframe aur Tracking ka code daalein
+    }
+</script>
+
 </body>
 </html>

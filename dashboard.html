@@ -84,6 +84,93 @@
     </script>
 <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
 <script>eruda.init();</script>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, doc, onSnapshot, collection, query, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const videoConfig = {
+        apiKey: "AIzaSyB3zKexi3a-4WniftHc_00Tc8rcRdda7pY",
+        authDomain: "comj-b7bf6.firebaseapp.com",
+        projectId: "comj-b7bf6",
+        storageBucket: "comj-b7bf6.firebasestorage.app",
+        appId: "1:137177672880:web:307a4cec9b901c6e8ddf75"
+    };
+
+    try {
+        const vApp = initializeApp(videoConfig);
+        const vDB = getFirestore(vApp);
+        const realUser = localStorage.getItem('studentName') || "Student";
+
+        // 1. User Ka Naam Update
+        document.getElementById('userName').innerText = realUser;
+
+        // 2. Score aur Progress Ring Sync
+        const scoreVal = document.getElementById('currentScore');
+        const ring = document.getElementById('progressRing');
+        
+        if (realUser !== "Student") {
+            onSnapshot(doc(vDB, "students", realUser), (snap) => {
+                if (snap.exists()) {
+                    const data = snap.data();
+                    const points = data.score || 0;
+                    const watched = data.videosWatched || 0;
+                    
+                    // Score Text Update
+                    scoreVal.innerText = points;
+                    
+                    // Ring Animation (Target: 20 Videos = 100%)
+                    const percent = Math.min((watched / 20) * 360, 360);
+                    ring.style.background = `conic-gradient(var(--primary) ${percent}deg, var(--border) 0deg)`;
+                }
+            });
+        }
+
+        // 3. Videos Load Karna
+        const videoBox = document.getElementById('oneShotRail');
+        if (videoBox) {
+            const qV = query(collection(vDB, "contents"), limit(10));
+            onSnapshot(qV, (snap) => {
+                videoBox.innerHTML = '';
+                if(snap.empty) videoBox.innerHTML = "<p style='padding:10px;'>No videos found.</p>";
+                
+                snap.forEach(d => {
+                    const v = d.data();
+                    videoBox.innerHTML += `
+                        <div class="v-card" onclick="location.href='player.html?id=${d.id}'" style="cursor:pointer;">
+                            <img src="${v.thumbnail}" style="width:100%; aspect-ratio:16/9; object-fit:cover;">
+                            <div style="padding:10px;">
+                                <h4 style="font-size:0.9rem; margin-bottom:5px;">${v.title}</h4>
+                                <p style="font-size:0.75rem; color:gray;">Physics Expert</p>
+                            </div>
+                        </div>`;
+                });
+            });
+        }
+
+        // 4. Logout Logic
+        document.getElementById('logoutBtn').onclick = () => {
+            localStorage.clear();
+            window.location.href = 'index.html';
+        };
+
+    } catch (e) {
+        console.error("Dashboard Error: ", e);
+    }
+
+    // Theme Toggle Function
+    window.toggleTheme = function() {
+        const body = document.body;
+        const current = body.getAttribute('data-theme');
+        const next = current === 'dark' ? 'light' : 'dark';
+        body.setAttribute('data-theme', next);
+        localStorage.setItem('siteTheme', next);
+        document.getElementById('themeIcon').setAttribute('data-lucide', next === 'dark' ? 'moon' : 'sun');
+        lucide.createIcons();
+    };
+</script>
+
+
+
 
 </body>
 </html>

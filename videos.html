@@ -80,5 +80,54 @@
         ovl.onclick = () => { sBar.classList.remove('active'); ovl.classList.remove('active'); }
         lucide.createIcons();
     </script>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, collection, query, onSnapshot, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const videoConfig = {
+        apiKey: "AIzaSyB3zKexi3a-4WniftHc_00Tc8rcRdda7pY",
+        authDomain: "comj-b7bf6.firebaseapp.com",
+        projectId: "comj-b7bf6",
+        storageBucket: "comj-b7bf6.firebasestorage.app",
+        appId: "1:137177672880:web:307a4cec9b901c6e8ddf75"
+    };
+
+    const vApp = initializeApp(videoConfig);
+    const vDB = getFirestore(vApp);
+
+    async function loadAllVideos() {
+        const videoBox = document.getElementById('mainVideoFeed'); // Check kijiye aapki ID yahi hai na?
+        if (!videoBox) return;
+
+        // "All Videos" ke liye simple query bina kisi filter ke
+        const qAll = query(collection(vDB, "contents"), limit(20));
+
+        onSnapshot(qAll, (snap) => {
+            videoBox.innerHTML = '';
+            if (snap.empty) {
+                videoBox.innerHTML = "<p style='text-align:center; color:gray;'>Abhi koi video upload nahi hai.</p>";
+                return;
+            }
+            snap.forEach(d => {
+                const v = d.data();
+                videoBox.innerHTML += `
+                    <div class="video-card" onclick="location.href='player.html?id=${d.id}'" style="cursor:pointer; margin-bottom:15px; background:var(--card); border-radius:12px; overflow:hidden;">
+                        <img src="${v.thumbnail}" style="width:100%; aspect-ratio:16/9; object-fit:cover;">
+                        <div style="padding:10px;">
+                            <h4 style="margin:0; font-size:0.9rem;">${v.title}</h4>
+                            <p style="margin:5px 0 0; font-size:0.75rem; color:gray;">${v.teacher || 'PhysicsnotB'}</p>
+                        </div>
+                    </div>`;
+            });
+        }, (err) => {
+            alert("Videos Load Error: " + err.message);
+        });
+    }
+
+    loadAllVideos();
+</script>
+
+
+
 </body>
 </html>
