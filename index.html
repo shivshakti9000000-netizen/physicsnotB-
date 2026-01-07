@@ -1,0 +1,81 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhysicsnotB | Best Free Physics Lectures & One Shot Videos</title>
+    
+    <meta name="description" content="PhysicsnotB provides the best free physics lectures, one shot videos, and numerical practice for Class 11, 12, and JEE/NEET. Start learning physics with expert teachers.">
+    <meta name="keywords" content="Physics, One Shot Physics, Physics Lectures, JEE Physics, NEET Physics, PhysicsnotB, Free Education">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #38bdf8; --bg: #0f172a; --card: #1e293b; --text: #f8fafc; }
+        body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); scroll-behavior: smooth; }
+        
+        .hero { height: 100vh; display: flex; align-items: center; justify-content: center; flex-direction: column; text-align: center; padding: 20px; border-bottom: 1px solid #334155; }
+        .login-card { background: var(--card); padding: 2.5rem; border-radius: 24px; width: 100%; max-width: 400px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); }
+        h1 { font-size: 2.5rem; color: var(--primary); margin: 0; }
+        input { width: 100%; padding: 15px; margin: 20px 0; background: #0f172a; border: 1.5px solid #334155; border-radius: 12px; color: white; box-sizing: border-box; font-size: 1rem; }
+        .btn-enter { width: 100%; padding: 15px; background: var(--primary); color: #0f172a; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; font-size: 1.1rem; transition: 0.3s; }
+        
+        .content-section { padding: 80px 20px; max-width: 900px; margin: auto; line-height: 1.8; color: #cbd5e1; }
+        .content-section h2 { color: var(--primary); font-size: 2rem; margin-top: 40px; }
+        .content-section p { margin-bottom: 20px; text-align: justify; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin: 40px 0; }
+        .feature-card { background: var(--card); padding: 25px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); }
+    </style>
+</head>
+<body>
+
+    <section class="hero">
+        <div class="login-card">
+            <h1>PhysicsnotB</h1>
+            <p>Master Physics with Zero Distractions</p>
+            <input type="text" id="nameInput" placeholder="Enter your name to start...">
+            <button class="btn-enter" id="startBtn">Get Started 🚀</button>
+        </div>
+        <p style="margin-top: 40px; color: #64748b;">Scroll down to explore the future of Physics learning ↓</p>
+    </section>
+
+    <div class="content-section">
+        <h2>PhysicsnotB: Ek Nayi Shuruwat Physics Ke Saath</h2>
+        <p>PhysicsnotB sirf ek learning platform nahi hai, ye physics ke har ek concept ko asaan banane ki ek koshish hai. Hum jaante hain ki aksar bache physics ke complex numericals aur derivations se darrte hain. Isliye humne ek aisa platform taiyaar kiya hai jahan aapko milenge curated lectures jo aapke darr ko khatam kar denge.</p>
+
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>Structured One Shot Videos</h3>
+                <p>Revision ke liye ghanton barbaad karne ki zaroorat nahi. Hamare expert-led one shot videos mein pura chapter basics se advanced tak cover kiya jata hai.</p>
+            </div>
+            <div class="feature-card">
+                <h3>No Ads, No Distractions</h3>
+                <p>YouTube par padhte waqt ads aapka dhyan bhatkate hain. PhysicsnotB par hum ek clean interface provide karte hain taaki aap sirf padhai par focus karein.</p>
+            </div>
+        </div>
+
+        <h2>Deep Concept Clarity for JEE & NEET</h2>
+        <p>Agar aap JEE ya NEET ki taiyari kar rahe hain, toh aapko pata hoga ki concepts ki gahrai kitni zaruri hai. Hamare videos mein humne vishesh roop se pichle saalon ke questions (PYQs) ko solve karne ki techniques sikhayi hain. PhysicsnotB par upload hone wala har ek content quality check se gujarta hai taaki aapko galat jaankari na mile.</p>
+        
+        <p>Hamara mission hai ki har ek bache tak quality education muft mein pahuche. Physics ke har topic jaise Mechanics, Optics, Thermodynamics, aur Electromagnetism ko humne categories mein baanta hai taaki aapko jo dhundhna ho, wo turant mil jaye. User interface ko humne simple rakha hai taaki slow internet par bhi video smoothly chale.</p>
+
+        <h2>Smart Features: Toggle Light & Night Mode</h2>
+        <p>Padhai kabhi bhi ho sakti hai--din mein ya raat ko. Isliye humne 'Light Off' feature diya hai. Agar aap raat ko padh rahe hain, toh aap dark mode toggle kar sakte hain, jisse aapki aankhon par zor nahi padega aur aap lambe samay tak focus kar payenge. Ye settings aapke device mein save ho jati hain, toh aapko baar-baar badalne ki zaroorat nahi.</p>
+
+        <p>Join kijiye PhysicsnotB aaj hi aur dekhiye kaise physics aapka sabse pasandida subject banta hai. Hum lagatar naye features aur videos add kar rahe hain taaki aapki taiyari mein koi kami na rahe. Har video ke niche aapko recommended topics milenge jo aapke learning path ko aur behtar banayenge.</p>
+    </div>
+
+    <script>
+        // Auto-Redirect if name exists
+        if (localStorage.getItem('studentName')) {
+            window.location.href = 'dashboard.html';
+        }
+
+        document.getElementById('startBtn').onclick = () => {
+            const name = document.getElementById('nameInput').value.trim();
+            if (name.length < 2) return alert("Please enter your name, Boss!");
+            localStorage.setItem('studentName', name);
+            window.location.href = 'dashboard.html';
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | PhysicsnotB</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root { --bg: #f1f5f9; --surface: #ffffff; --primary: #2563eb; --text: #1e293b; --border: #e2e8f0; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); padding: 20px; }
+        .admin-card { max-width: 500px; margin: 40px auto; background: var(--surface); padding: 2rem; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 1px solid var(--border); }
+        .form-group { margin-bottom: 1.2rem; }
+        label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 5px; color: #64748b; }
+        input, select { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; outline: none; font-size: 0.95rem; }
+        input:focus { border-color: var(--primary); }
+        .upload-btn { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; margin-top: 10px; transition: 0.3s; }
+        .upload-btn:active { transform: scale(0.98); }
+        .status { margin-top: 15px; text-align: center; font-size: 0.9rem; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+    <div class="admin-card">
+        <div style="text-align: center; margin-bottom: 1.5rem;">
+            <i data-lucide="shield-check" style="width: 40px; height: 40px; color: var(--primary);"></i>
+            <h2 style="margin-top: 10px;">Boss Admin Panel</h2>
+            <p style="font-size: 0.8rem; color: gray;">Add New Content to PhysicsnotB</p>
+        </div>
+
+        <div class="form-group">
+            <label>Video Title</label>
+            <input type="text" id="vTitle" placeholder="e.g. Electrostatics One Shot">
+        </div>
+
+        <div class="form-group">
+            <label>Teacher Name</label>
+            <input type="text" id="vTeacher" placeholder="e.g. Alakh Pandey Sir">
+        </div>
+
+        <div class="form-group">
+            <label>Category (Matches the Chips)</label>
+            <select id="vCategory">
+                <option value="One Shot">One Shot</option>
+                <option value="Electrostatics">Electrostatics</option>
+                <option value="Optics">Optics</option>
+                <option value="PYQs">PYQs</option>
+                <option value="Important">Important</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>YouTube Video ID</label>
+            <input type="text" id="vID" placeholder="e.g. dQw4w9WgXcQ (Link ka last part)">
+        </div>
+
+        <div class="form-group">
+            <label>Thumbnail URL (Optional)</label>
+            <input type="text" id="vThumb" placeholder="Image link yahan daalein">
+        </div>
+
+        <button class="upload-btn" id="submitVideo">Launch Video 🚀</button>
+        <div id="statusMsg" class="status"></div>
+        
+        <button onclick="window.location.href='dashboard.html'" style="width: 100%; margin-top: 15px; background: none; border: none; color: gray; cursor: pointer; font-size: 0.8rem;">Go Back to Dashboard</button>
+    </div>
+
+    <script type="module" src="app.js"></script>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

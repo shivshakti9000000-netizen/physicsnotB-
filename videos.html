@@ -1,0 +1,84 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Videos | PhysicsnotB</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root { --bg: #f8fafc; --surface: #ffffff; --primary: #2563eb; --text: #1e293b; --border: #e2e8f0; }
+        [data-theme="dark"] { --bg: #0f172a; --surface: #1e293b; --primary: #38bdf8; --text: #f1f5f9; --border: #334155; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: var(--bg); color: var(--text); padding-bottom: 80px; }
+        
+        .app-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: var(--surface); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--border); }
+        
+        .chip-bar { display: flex; gap: 8px; overflow-x: auto; padding: 10px 1rem; background: var(--surface); position: sticky; top: 60px; z-index: 999; scrollbar-width: none; border-bottom: 1px solid var(--border); }
+        .chip-bar::-webkit-scrollbar { display: none; }
+        .chip { padding: 6px 16px; border-radius: 20px; background: var(--bg); border: 1px solid var(--border); font-size: 0.8rem; font-weight: 600; white-space: nowrap; cursor: pointer; }
+        .chip.active { background: var(--text); color: var(--surface); }
+
+        .v-grid { padding: 1rem; display: grid; gap: 1.2rem; }
+        .v-card { background: var(--surface); border-radius: 12px; overflow: hidden; }
+        .v-thumb { width: 100%; aspect-ratio: 16/9; background: #cbd5e1; background-size: cover; position: relative; }
+        .v-info { padding: 12px; display: flex; gap: 10px; }
+        .v-text h4 { font-size: 0.9rem; margin-bottom: 4px; }
+        .v-text p { font-size: 0.75rem; color: #64748b; }
+
+        /* Sidebar & Nav - Same as Dashboard */
+        .sidebar { position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: var(--surface); z-index: 2000; transition: 0.3s; padding: 2rem 1.5rem; }
+        .sidebar.active { left: 0; }
+        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; z-index: 1500; }
+        .overlay.active { display: block; }
+        .side-link { display: flex; align-items: center; gap: 15px; padding: 12px; color: var(--text); text-decoration: none; border-radius: 8px; margin-bottom: 8px; font-weight: 500; border: none; background: none; width: 100%; text-align: left; }
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: var(--surface); display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); z-index: 1000; }
+        .nav-item { color: #64748b; text-decoration: none; font-size: 0.7rem; text-align: center; flex: 1; font-weight: 600; }
+        .nav-item.active { color: var(--primary); }
+    </style>
+</head>
+<body>
+    <div class="overlay" id="overlay"></div>
+    <div class="sidebar" id="sidebar">
+        <h2 style="color: var(--primary); margin-bottom: 1.5rem;">PhysicsnotB</h2>
+        <a href="dashboard.html" class="side-link"><i data-lucide="home"></i> Home</a>
+        <a href="videos.html" class="side-link" style="background:var(--bg)"><i data-lucide="play"></i> Videos</a>
+        <a href="community.html" class="side-link"><i data-lucide="users"></i> Community</a>
+        <button id="logoutBtn" class="side-link" style="color: #ef4444; margin-top: 20px;"><i data-lucide="log-out"></i> Logout</button>
+    </div>
+
+    <header class="app-header">
+        <button id="menuBtn" style="background:none; border:none; color:var(--text)"><i data-lucide="menu"></i></button>
+        <h3 style="font-weight: 800;">Video Library</h3>
+        <button onclick="toggleTheme()" style="background:none; border:none; color:var(--text)"><i data-lucide="sun" id="themeIcon"></i></button>
+    </header>
+
+    <div class="chip-bar">
+        <div class="chip active">All</div>
+        <div class="chip">One Shot</div>
+        <div class="chip">Electrostatics</div>
+        <div class="chip">Optics</div>
+        <div class="chip">PYQs</div>
+    </div>
+
+    <div class="v-grid" id="mainVideoFeed">
+        <p style="text-align: center; color: gray;">Loading Boss Feed...</p>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="dashboard.html" class="nav-item"><i data-lucide="home"></i><br>Home</a>
+        <a href="videos.html" class="nav-item active"><i data-lucide="play"></i><br>Videos</a>
+        <a href="community.html" class="nav-item"><i data-lucide="message-circle"></i><br>Chat</a>
+    </nav>
+
+    <script type="module" src="app.js"></script>
+    <script>
+        const mBtn = document.getElementById('menuBtn');
+        const sBar = document.getElementById('sidebar');
+        const ovl = document.getElementById('overlay');
+        mBtn.onclick = () => { sBar.classList.add('active'); ovl.classList.add('active'); }
+        ovl.onclick = () => { sBar.classList.remove('active'); ovl.classList.remove('active'); }
+        lucide.createIcons();
+    </script>
+</body>
+</html>

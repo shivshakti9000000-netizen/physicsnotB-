@@ -1,0 +1,124 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Community | PhysicsnotB</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root { --bg: #f1f5f9; --surface: #ffffff; --primary: #2563eb; --text: #1e293b; --dim: #64748b; --border: #e2e8f0; }
+        [data-theme="dark"] { --bg: #0f172a; --surface: #1e293b; --primary: #38bdf8; --text: #f1f5f9; --dim: #94a3b8; --border: #334155; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: var(--bg); color: var(--text); padding-bottom: 80px; height: 100vh; display: flex; flex-direction: column; }
+
+        /* Header */
+        .app-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1rem 1.2rem; background: var(--surface);
+            position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--border);
+        }
+
+        /* Sidebar & Overlay */
+        .sidebar { position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: var(--surface); z-index: 2000; transition: 0.3s; padding: 2rem 1.5rem; box-shadow: 10px 0 30px rgba(0,0,0,0.1); }
+        .sidebar.active { left: 0; }
+        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; z-index: 1500; }
+        .overlay.active { display: block; }
+        .side-link { display: flex; align-items: center; gap: 15px; padding: 12px; color: var(--text); text-decoration: none; border-radius: 8px; margin-bottom: 8px; font-weight: 500; }
+
+        /* Post Box */
+        .post-section { padding: 1rem; background: var(--surface); border-bottom: 1px solid var(--border); }
+        .post-box { 
+            background: var(--bg); border-radius: 12px; padding: 10px;
+            border: 1px solid var(--border);
+        }
+        #doubtInput { 
+            width: 100%; border: none; background: none; color: var(--text);
+            font-size: 0.95rem; resize: none; outline: none; min-height: 60px;
+        }
+        .post-actions { display: flex; justify-content: flex-end; margin-top: 10px; }
+        #postBtn { 
+            background: var(--primary); color: white; border: none; 
+            padding: 8px 20px; border-radius: 20px; font-weight: 600; 
+            cursor: pointer; display: flex; align-items: center; gap: 5px;
+        }
+
+        /* Chat Feed */
+        .chat-feed { flex: 1; overflow-y: auto; padding: 1.2rem; display: flex; flex-direction: column; }
+        .msg-card { 
+            background: var(--surface); padding: 12px; border-radius: 15px; 
+            margin-bottom: 12px; border: 1px solid var(--border);
+            max-width: 85%; align-self: flex-start;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .msg-user { color: var(--primary); font-size: 0.75rem; font-weight: 700; margin-bottom: 4px; display: block; }
+        .msg-text { font-size: 0.92rem; line-height: 1.4; }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            position: fixed; bottom: 0; width: 100%; height: 70px;
+            background: var(--surface); display: flex; justify-content: space-around;
+            align-items: center; border-top: 1px solid var(--border); z-index: 1000;
+        }
+        .nav-item { color: var(--dim); text-decoration: none; font-size: 0.65rem; text-align: center; flex: 1; }
+        .nav-item.active { color: var(--primary); }
+    </style>
+</head>
+<body>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="sidebar" id="sidebar">
+        <h2 style="margin-bottom: 2rem; color: var(--primary);">PhysicsnotB</h2>
+        <a href="dashboard.html" class="side-link"><i data-lucide="layout"></i> Dashboard</a>
+        <a href="videos.html" class="side-link"><i data-lucide="play"></i> Videos</a>
+        <a href="community.html" class="side-link" style="background: var(--bg);"><i data-lucide="message-square"></i> Community</a>
+        <button id="logoutBtn" class="side-link" style="width:100%; border:none; background:none; color:#ef4444; margin-top:20px; cursor:pointer;"><i data-lucide="log-out"></i> Logout</button>
+    </div>
+
+    <header class="app-header">
+        <button id="menuBtn" style="background:none; border:none; color:var(--text)"><i data-lucide="menu"></i></button>
+        <div style="font-weight: 800; font-size: 1.1rem;">Community Hub</div>
+        <button onclick="toggleTheme()" style="background:none; border:none; color:var(--text)"><i data-lucide="sun" id="themeIcon"></i></button>
+    </header>
+
+    <div class="post-section">
+        <div class="post-box">
+            <textarea id="doubtInput" placeholder="What's your doubt, Boss?"></textarea>
+            <div class="post-actions">
+                <button id="postBtn"><i data-lucide="send" style="width: 16px;"></i> Post</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="chat-feed" id="communityFeed">
+        <p style="text-align: center; color: var(--dim); margin-top: 20px;">Connecting to Hub...</p>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="dashboard.html" class="nav-item"><i data-lucide="home"></i><br>Home</a>
+        <a href="videos.html" class="nav-item"><i data-lucide="play"></i><br>Videos</a>
+        <a href="community.html" class="nav-item active"><i data-lucide="message-circle"></i><br>Chat</a>
+        <a href="profile.html" class="nav-item"><i data-lucide="user"></i><br>Profile</a>
+    </nav>
+
+    <script type="module" src="app.js"></script>
+    <script>
+        const mBtn = document.getElementById('menuBtn');
+        const sBar = document.getElementById('sidebar');
+        const ovl = document.getElementById('overlay');
+
+        mBtn.onclick = () => { sBar.classList.add('active'); ovl.classList.add('active'); }
+        ovl.onclick = () => { sBar.classList.remove('active'); ovl.classList.remove('active'); }
+
+        window.toggleTheme = function() {
+            const body = document.body;
+            const isDark = body.getAttribute('data-theme') === 'dark';
+            body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            document.getElementById('themeIcon').setAttribute('data-lucide', isDark ? 'sun' : 'moon');
+            lucide.createIcons();
+        }
+        lucide.createIcons();
+    </script>
+</body>
+</html>
